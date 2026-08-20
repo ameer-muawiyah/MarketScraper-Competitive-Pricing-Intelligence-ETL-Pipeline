@@ -75,4 +75,6 @@ if __name__ == "__main__":
     scraper = MarketScraper()
     scraper.scrape_category("https://books.toscrape.com/catalogue/category/books/mystery_3")
     final_df = scraper.export_to_csv("mystery_competitors.csv")
+    final_df['Price'] = final_df['Price'].str.replace('Â£', '', regex=False)
+    final_df['Price'] = final_df['Price'].astype(float)
     print(final_df.head())
