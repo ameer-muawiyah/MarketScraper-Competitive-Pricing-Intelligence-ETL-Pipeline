@@ -156,3 +156,30 @@ markscraper/
 ```
 
 ---
+
+## 📦 Installation
+
+```bash
+git clone https://github.com/your-username/market-scraper.git
+cd market-scraper
+pip install -r requirements.txt
+```
+
+**requirements.txt:**
+```
+requests
+beautifulsoup4
+pandas
+```
+
+---
+
+## 👤 Author
+
+**Ameer** — BS Computer Science, specializing in Data Science  
+IBM Data Science Professional Certificate Candidate  
+*Building production-grade data pipelines, one ETL at a time.*
+
+---
+
+> ⚠️ **Disclaimer:** This project was built for educational purposes using a publicly available sandbox website ([books.toscrape.com](https://books.toscrape.com)) explicitly designed for web scraping practice. Always review a website's `robots.txt` and Terms of Service before scraping.
