@@ -110,3 +110,49 @@ scraper.scrape_category("https://books.toscrape.com/catalogue/category/books/mys
 # 3. Export results to CSV and retrieve the DataFrame
 final_df = scraper.export_to_csv("mystery_competitors.csv")
 
+# 4. Inspect results
+print(final_df.head())
+```
+
+**Expected Output:**
+```
+Initiating scraping protocol for: https://...mystery_3...
+Successfully breached page 1...
+Successfully breached page 2...
+Target exhausted. Scraping completed at page 2.
+SUCCESS: Exported 32 rows to mystery_competitors.csv.
+```
+
+---
+
+## 📊 Sample Output (mystery_competitors.csv)
+
+| Title | Price | Ratings | Availability Status |
+|---|---|---|---|
+| Sharp Objects | £47.82 | 4 | In stock |
+| In a Dark, Dark Wood | £19.63 | 1 | In stock |
+| The Past Never Ends | £56.50 | 4 | In stock |
+| ... | ... | ... | ... |
+
+---
+
+## 🧠 Key Engineering Decisions & Lessons
+
+- **OOP Encapsulation:** Wrapping the scraper in a class allows `master_list` and `mapping_dict` to persist across method calls, making the architecture modular and extensible.
+- **Separation of Concerns:** `extract_book_data()` handles a single record; `scrape_category()` handles pagination; `export_to_csv()` handles output — each method has one job.
+- **Fail Fast, Exit Clean:** The `status_code != 200` gate means the scraper never silently processes empty or error pages.
+
+---
+
+## 📁 Repository Structure
+
+```
+markscraper/
+│
+├── market_scraper.py        # Main scraper class (ETL pipeline)
+├── mystery_competitors.csv  # Output dataset
+├── requirements.txt         # Project dependencies
+└── README.md                # Project documentation
+```
+
+---
