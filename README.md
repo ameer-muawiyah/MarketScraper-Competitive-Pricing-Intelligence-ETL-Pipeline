@@ -1,7 +1,7 @@
 # 📚 MarketScraper — Competitive Pricing Intelligence ETL Pipeline
 
-> **Domain:** Publishing & Market Intelligence | **Category:** Web Scraping · Data Engineering · OOP  
-> **Stack:** Python · Requests · BeautifulSoup4 · Pandas
+> **Domain:** Publishing & Market Intelligence | **Category:** Web Scraping · Data Engineering · OOP · EDA  
+> **Stack:** Python · Requests · BeautifulSoup4 · Pandas · Matplotlib
 
 ---
 
@@ -94,7 +94,8 @@ Each book is extracted into a clean Python dictionary before being appended to t
 | `Python 3.x` | Core language |
 | `requests` | HTTP GET requests & status code validation |
 | `BeautifulSoup4` | HTML parsing & DOM traversal |
-| `pandas` | DataFrame construction & CSV export |
+| `pandas` | DataFrame construction, data cleaning & CSV export |
+| `matplotlib` | Exploratory data visualizations (demo notebook) |
 
 ---
 
@@ -136,6 +137,28 @@ SUCCESS: Exported 32 rows to mystery_competitors.csv.
 
 ---
 
+## 📈 EDA & Visualizations (`demo.ipynb`)
+
+The companion notebook goes beyond scraping — it cleans the raw data and produces two exploratory visualizations:
+
+**Step 1 — Price Cleaning**  
+The raw `Price` field contains a character encoding artifact (`Â£`). The notebook strips it and casts the column to `float` for numeric analysis:
+
+```python
+final_df['Price'] = final_df['Price'].str.replace('Â£', '', regex=False)
+final_df['Price'] = final_df['Price'].astype(float)
+```
+
+**Graph 1 — Price Distribution Histogram**  
+Shows how Mystery book prices are distributed across the catalogue (bin width ~£5). Useful for identifying the most common price band and outliers.
+
+**Graph 2 — Average Price by Star Rating**  
+A bar chart that plots the mean price for each star rating (1–5). Reveals whether highly-rated titles tend to be priced higher — a key input for a pricing strategy.
+
+> 💡 Open `demo.ipynb` on GitHub to see the rendered charts alongside the code and output.
+
+---
+
 ## 🧠 Key Engineering Decisions & Lessons
 
 - **OOP Encapsulation:** Wrapping the scraper in a class allows `master_list` and `mapping_dict` to persist across method calls, making the architecture modular and extensible.
@@ -150,6 +173,7 @@ SUCCESS: Exported 32 rows to mystery_competitors.csv.
 markscraper/
 │
 ├── market_scraper.py        # Main scraper class (ETL pipeline)
+├── demo.ipynb               # EDA notebook with visualizations
 ├── mystery_competitors.csv  # Output dataset
 ├── requirements.txt         # Project dependencies
 └── README.md                # Project documentation
@@ -160,8 +184,8 @@ markscraper/
 ## 📦 Installation
 
 ```bash
-git clone https://github.com/your-username/market-scraper.git
-cd market-scraper
+git clone https://github.com/ameer-muawiyah/MarketScraper-Competitive-Pricing-Intelligence-ETL-Pipeline.git
+cd MarketScraper-Competitive-Pricing-Intelligence-ETL-Pipeline
 pip install -r requirements.txt
 ```
 
@@ -170,6 +194,7 @@ pip install -r requirements.txt
 requests
 beautifulsoup4
 pandas
+matplotlib
 ```
 
 ---
