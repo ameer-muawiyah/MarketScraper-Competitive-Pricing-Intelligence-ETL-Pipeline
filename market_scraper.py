@@ -37,5 +37,46 @@ class MarketScraper:
             'Availability Status': book_instock_status
         }
 
+    def scrape_category(self, start_url):
+        """
+        Dynamically paginates through a given category URL, scraping all available books.
+        """
+        num = 1
+        print(f"Initiating scraping protocol for: {start_url}...")
+        
+        while True:
+            # Construct the dynamic URL for the current page
+            target_url = f"{start_url}/page-{num}.html"
+            r = requests.get(target_url)
+            
+            # The Failsafe: Break if the page does not exist
+            if r.status_code != 200:
+                print(f"Target exhausted. Scraping completed at page {num - 1}.")
+                break
+                
+            print(f"Successfully breached page {num}...")
+            
+            # Parse the HTML and extract the pods
+            mystery_soup = BeautifulSoup(r.text, 'html.parser')
+            mystery_books = mystery_soup.find_all('article', {'class': 'product_pod'})
+            
+            # Loop through the pods, call the extraction method, and store the dictionary
+            for book in mystery_books:
+                clean_book_dict = self.extract_book_data(book)
+                self.master_list.append(clean_book_dict)
+                
+            # Increment to target the next page
+            num += 1
+
+    def export_to_csv(self, filename):
+        """
+        Converts the master_list to a Pandas DataFrame, saves it to a CSV, 
+        and returns the DataFrame for notebook preview.
+        """
+        df = pd.DataFrame(self.master_list)
+        df.to_csv(filename, index=False)
+        print(f"SUCCESS: Exported {len(self.master_list)} rows to {filename}.")
+        
+        return df
     
 
