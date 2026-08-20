@@ -5,10 +5,8 @@ import pandas as pd
 class MarketScraper:
     
     def __init__(self):
-        # 1. The universal dictionary map for the entire class
         self.mapping_dict = {'One': 1, 'Two': 2, 'Three': 3, 'Four': 4, 'Five': 5}
         
-        # 2. The master vault that will hold all scraped data
         self.master_list = []
 
     def extract_book_data(self, book_pod):
@@ -20,14 +18,12 @@ class MarketScraper:
         book_price = book_pod.find('p', {'class': 'price_color'}).text
         book_instock_status = book_pod.find('p', {'class': 'instock availability'}).text.strip()
         
-        # Rating extraction
         book_rating_element = book_pod.find('p', {'class': 'star-rating'})
         mystery_book_ratings = None
         
         if book_rating_element:
             book_class_list = book_rating_element['class']
             mystery_book_ratings = book_class_list[1]
-            # Convert string to integer using the class attribute
             mystery_book_ratings = self.mapping_dict[mystery_book_ratings] 
             
         return {
@@ -45,27 +41,22 @@ class MarketScraper:
         print(f"Initiating scraping protocol for: {start_url}...")
         
         while True:
-            # Construct the dynamic URL for the current page
             target_url = f"{start_url}/page-{num}.html"
             r = requests.get(target_url)
             
-            # The Failsafe: Break if the page does not exist
             if r.status_code != 200:
                 print(f"Target exhausted. Scraping completed at page {num - 1}.")
                 break
                 
             print(f"Successfully breached page {num}...")
             
-            # Parse the HTML and extract the pods
             mystery_soup = BeautifulSoup(r.text, 'html.parser')
             mystery_books = mystery_soup.find_all('article', {'class': 'product_pod'})
             
-            # Loop through the pods, call the extraction method, and store the dictionary
             for book in mystery_books:
                 clean_book_dict = self.extract_book_data(book)
                 self.master_list.append(clean_book_dict)
                 
-            # Increment to target the next page
             num += 1
 
     def export_to_csv(self, filename):
